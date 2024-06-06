@@ -9,6 +9,9 @@ const route = require('./routes')
 // connectDB init
 const db = require('./app/config/db/connect')
 
+// middleware DB post data
+app.use(express.urlencoded())
+
 db.connectDB()
 // config static files
 app.use(express.static(path.join(__dirname,'pulic')))

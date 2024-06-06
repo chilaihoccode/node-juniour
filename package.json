@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/chilaihoccode/node-juniour#readme",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "mongoose-slug-generator": "^1.0.4"
   },
   "devDependencies": {
     "express-handlebars": "^7.1.2",

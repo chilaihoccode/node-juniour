@@ -15,6 +15,23 @@ class MovieController {
         .catch(next)
     }
 
+    // create movies/create
+    create(req,res,next) {
+        res.render('movies/create')
+    }
+
+    // store movies/store
+    store(req,res,next) {
+        const formData = req.body
+        formData.image = `https://image.motchilltv.to/avatar/${req.body.imageID}-x350.webp` 
+        const movie = new Movies(formData)
+        movie.save()
+            .then(() => res.redirect('/'))
+            .catch(next)
+
+        console.log('Save Movies')
+    }
+
 }
 
 module.exports = new MovieController
