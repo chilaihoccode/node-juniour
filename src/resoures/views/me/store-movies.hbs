@@ -1,0 +1,27 @@
+<div class="container mt4">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">STT</th>
+                <th scope="col">name</th>
+                <th scope="col">title</th>
+                <th scope="col">createAt</th>
+                <th scope="col">handle</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each movies}}
+            <tr>
+                <th scope="row">{{@index}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.title}}</td>
+                <td>{{this.createdAt}}</td>
+                <td>
+                    <a class="btn btn-warning" href="/movies/{{this._id}}/edit">Sua</a>
+                    <a class="btn btn-danger" href="#">Xoa</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

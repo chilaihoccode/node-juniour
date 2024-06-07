@@ -15,4 +15,5 @@ const Movies = new Schema({
     timestamps : true
 })
 
+
 module.exports = mongoose.model('Movies',Movies)

@@ -1,5 +1,7 @@
 <!-- Image and text -->
-<nav class="navbar navbar-light bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container ">
   <a class="navbar-brand" href="/">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" focusable="false" role="img" width="30" height="30">
       <title>Bootstrap</title>
@@ -8,7 +10,20 @@
     </svg>
     Bootstrap
   </a>
-  <a class="navbar-brand" href="../movies/create">
-  <p>Tao phim moi</p>
-  </a>
+    <ul class="navbar-nav mr-4">
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+            ChiBui
+          </a>
+          <div class="dropdown-menu mr-10">
+            <a class="dropdown-item" href="movies/create">Trang cua toi</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="movies/create">Them Phim</a>
+            <a class="dropdown-item" href="me/stored/movies">Phim cua toi</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Dang xuat</a>
+          </div>
+      </li>
+    </ul>
+</div>
 </nav>

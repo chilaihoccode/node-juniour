@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
 const handlebars = require('express-handlebars')
+const methodOverride = require('method-override')
 
 const app = express()
 const port = 3000
@@ -23,6 +24,9 @@ app.set('view engine', '.hbs');
 app.set('views',path.join(__dirname,'resoures','views'))
 
 route(app)
+
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method'))
 
 
 // app.get('/', (req, res) => {
