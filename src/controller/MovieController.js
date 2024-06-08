@@ -41,8 +41,17 @@ class MovieController {
     }
       // [PUT] movies/:id
       update(req,res,next) {
-        console.log('PUT')
-        res.json(req.body)
+        Movies.findOneAndUpdate({ _id : req.params.id},req.body,{image : `https://image.motchilltv.to/motchill/${req.body.imageID}-x350.webp`} )
+            .then(() => res.redirect('/me/stored/movies'))
+            .catch(next)
+
+    }
+
+    // [DELETE] movies/:id
+    destroy(req,res,next) {
+        Movies.deleteOne({ _id : req.params.id})
+            .then(res.redirect('back'))
+            .catch(next)
     }
 }
 

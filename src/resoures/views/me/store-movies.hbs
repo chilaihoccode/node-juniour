@@ -18,10 +18,54 @@
                 <td>{{this.createdAt}}</td>
                 <td>
                     <a class="btn btn-warning" href="/movies/{{this._id}}/edit">Sua</a>
-                    <a class="btn btn-danger" href="#">Xoa</a>
+                    <a class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id={{this._id}}>Xoa</a>
                 </td>
             </tr>
             {{/each}}
         </tbody>
     </table>
 </div>
+
+<form name="deleteForm" method="POST"></form>
+
+{{!-- confirm Delete --}}
+<div class="modal" tabindex="-1" id="deleteModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure delete movie??</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btnDelete" type="button" class="btn btn-danger">Delete</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{{!-- handle Delete --}}
+<script>
+    document.addEventListener('DOMContentLoaded',function () {
+        const btnDelete = document.getElementById('btnDelete')
+        var formDelete = document.forms['deleteForm']
+        var movieID
+
+        //when confirm clicked
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            movieID = button.data('id') 
+        })
+
+        btnDelete.addEventListener('click',function () {
+            formDelete.action = `/movies/${movieID}?_method=DELETE`
+            formDelete.submit()
+        })
+    })
+</script>

@@ -17,6 +17,9 @@ db.connectDB()
 // config static files
 app.use(express.static(path.join(__dirname,'pulic')))
 
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method'))
+
 app.engine('.hbs', handlebars.engine({
   extname: '.hbs'
 }));
@@ -24,10 +27,6 @@ app.set('view engine', '.hbs');
 app.set('views',path.join(__dirname,'resoures','views'))
 
 route(app)
-
-// override with POST having ?_method=DELETE
-app.use(methodOverride('_method'))
-
 
 // app.get('/', (req, res) => {
 //   res.render('home')

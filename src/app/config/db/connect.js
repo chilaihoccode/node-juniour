@@ -4,7 +4,7 @@ async function connectDB () {
     try {
         await mongoose.connect('mongodb://127.0.0.1:27017/ex1_education_dev',{
             useNewUrlParser: true,
-            useUnifiedTopology: true  
+            useUnifiedTopology: true,
         })
         console.log('Success Connect !!!')
     } catch (error) {
