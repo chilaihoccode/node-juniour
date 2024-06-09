@@ -21,7 +21,10 @@ app.use(express.static(path.join(__dirname,'pulic')))
 app.use(methodOverride('_method'))
 
 app.engine('.hbs', handlebars.engine({
-  extname: '.hbs'
+  extname: '.hbs',
+  helpers : {
+    sum : (a,b) => a + b 
+  }
 }));
 app.set('view engine', '.hbs');
 app.set('views',path.join(__dirname,'resoures','views'))

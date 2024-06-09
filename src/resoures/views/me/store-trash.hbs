@@ -1,9 +1,11 @@
 <div class="container mt4">
-    <div class="container mt-4 mb-2">
-      <a href="/movies/create" class="btn btn-primary">Them Phim</a>
-      {{#if countDeleted}}
-      <a href="/me/stored/trash" class="btn btn-secondary">Thung rac {{countDeleted}}</a>
-      {{/if}}
+    <div class="container mt-4 mb-4">
+      <a href="/me/stored/movies" class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-2" width="20px" height="20px">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+        </svg>
+        Quay lai
+      </a>
     </div>
     <table class="table">
         <thead>
@@ -18,19 +20,19 @@
         <tbody>
             {{#each movies}}
             <tr>
-                <th scope="row">{{sum @index 1}}</th>
+                <th scope="row">{{@index}}</th>
                 <td>{{this.name}}</td>
                 <td>{{this.title}}</td>
                 <td>{{this.createdAt}}</td>
                 <td>
-                    <a class="btn btn-warning" href="/movies/{{this._id}}/edit">Sua</a>
-                    <a class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id={{this._id}}>Xoa</a>
+                    <a class="btn btn-warning btnRestore" href="" data-id={{this._id}}>Khoi Phuc</a>
+                    <a class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id={{this._id}}>Xoa Vinh Vien</a>
                 </td>
             </tr>
             {{else}}
             <tr>
               <td colspan="5" class="text-center">
-                Ban chua co du lieu.<a href="/movies/create">Dang Khoa Hoc</a>
+                Thang Rac Rong.<a href="/me/stored/movies">Quay lai</a>
               </td>
             </tr>
             {{/each}}
@@ -41,6 +43,7 @@
 </div>
 
 <form name="deleteForm" method="POST"></form>
+<form name="restoreForm" method="POST"></form>
 
 {{!-- confirm Delete --}}
 <div class="modal" tabindex="-1" id="deleteModal">
@@ -68,7 +71,10 @@
 <script>
     document.addEventListener('DOMContentLoaded',function () {
         const btnDelete = document.getElementById('btnDelete')
+        //const btnRestore = document.querySelectorAll('.btnRestore')
+        const btnRestore = $('.btnRestore')
         var formDelete = document.forms['deleteForm']
+        var formRestore = document.forms['restoreForm']
         var movieID
 
         //when confirm clicked
@@ -78,8 +84,16 @@
         })
 
         btnDelete.addEventListener('click',function () {
-            formDelete.action = `/movies/${movieID}?_method=DELETE`
+            formDelete.action = `/movies/${movieID}/force?_method=DELETE`
             formDelete.submit()
+        })
+
+        btnRestore.click(function (e) {
+          e.preventDefault()
+
+          var movieID = $(this).data('id')
+          formRestore.action = `/movies/${movieID}/restore?_method=PATCH`
+          formRestore.submit()
         })
     })
 </script>

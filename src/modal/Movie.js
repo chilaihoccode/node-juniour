@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const mongooseDelete = require('mongoose-delete')
 const slug = require('mongoose-slug-generator')
 
-mongoose.plugin(slug)
 
 const Movies = new Schema({
     name : {type : String, max: 40},
@@ -11,9 +11,14 @@ const Movies = new Schema({
     imageID : {type : String},
     title : {type : String},
     slug : { type : String, slug: 'name', unique: true },
-},{
-    timestamps : true
-})
-
+    },{
+        timestamps : true
+        })
+        
+mongoose.plugin(slug)
+Movies.plugin(mongooseDelete, {
+        overrideMethods: 'all', 
+        deletedAt : true , 
+    })
 
 module.exports = mongoose.model('Movies',Movies)

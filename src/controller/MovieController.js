@@ -49,9 +49,25 @@ class MovieController {
 
     // [DELETE] movies/:id
     destroy(req,res,next) {
+        Movies.delete({ _id : req.params.id})
+            .then(res.redirect('back'))
+            .catch(next)
+    }
+
+    // [DELETE] movies/:id/force
+    forceDestroy(req,res,next) {
         Movies.deleteOne({ _id : req.params.id})
             .then(res.redirect('back'))
             .catch(next)
+    }
+
+    // [PATCH] movies/:id/restore
+    restore(req,res,next) {
+            Movies.restore({ _id : req.params.id })
+                .then(() => {
+                    res.redirect('/me/stored/movies')
+                })
+                .catch(next)
     }
 }
 
