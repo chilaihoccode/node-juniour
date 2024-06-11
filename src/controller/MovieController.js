@@ -69,6 +69,18 @@ class MovieController {
                 })
                 .catch(next)
     }
+
+    //[POST] /movies/handle-form
+    handleForm(req,res,next) {
+        switch(req.body.selectAction ) {
+            case 'delete': 
+                Movies.delete( {_id : {$in : req.body.checkMovies}})
+                    .then(res.redirect('back'))
+                    .catch(next)
+            break;
+            default : {'Invail handle'}
+        }
+    }
 }
 
 module.exports = new MovieController

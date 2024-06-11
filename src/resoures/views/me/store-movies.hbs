@@ -1,13 +1,30 @@
-<div class="container mt4">
+<form method="POST" action="/movies/handle-form" name="container-form" class="container mt4">
     <div class="container mt-4 mb-2">
       <a href="/movies/create" class="btn btn-primary">Them Phim</a>
       {{#if countDeleted}}
       <a href="/me/stored/trash" class="btn btn-secondary">Thung rac {{countDeleted}}</a>
       {{/if}}
+
+
+    {{!-- check ALL --}}
+      <div class="mt-4 mb-4 d-flex align-items-center">
+        <div class="check">
+          <input type="checkbox" id="checkAll">  
+          <label for="checkAll">Chon tat ca</label>
+        </div>
+        <select class="form-control form-control-sm div-select-option" name="selectAction" required>
+          <option value="">-- Select Action --</option>
+          <option value="delete">Delete</option>
+        </select>
+        <button class="btn btn-sm btn-primary btnSelected" disabled="disabled">Selected</button>
+      </div>
     </div>
+
+    {{!-- table  --}}
     <table class="table">
         <thead>
             <tr>
+                <th scope="col">#</th>
                 <th scope="col">STT</th>
                 <th scope="col">name</th>
                 <th scope="col">title</th>
@@ -18,6 +35,9 @@
         <tbody>
             {{#each movies}}
             <tr>
+                <th>
+                  <input type="checkbox" name="checkMovies[]" value="{{this._id}}">
+                </th>
                 <th scope="row">{{sum @index 1}}</th>
                 <td>{{this.name}}</td>
                 <td>{{this.title}}</td>
@@ -36,9 +56,8 @@
             {{/each}}
         </tbody>
     </table>
+</form>
 
-
-</div>
 
 <form name="deleteForm" method="POST"></form>
 
@@ -69,6 +88,10 @@
     document.addEventListener('DOMContentLoaded',function () {
         const btnDelete = document.getElementById('btnDelete')
         var formDelete = document.forms['deleteForm']
+        var formContainer = $('form[name="container-form"]')
+        var btnCheckAll = $("#checkAll")
+        var movieItems = $('input[name="checkMovies[]"]')
+        var btnSelected = $('.btnSelected')
         var movieID
 
         //when confirm clicked
@@ -77,9 +100,47 @@
             movieID = button.data('id') 
         })
 
+        //handle delete soft
         btnDelete.addEventListener('click',function () {
             formDelete.action = `/movies/${movieID}?_method=DELETE`
             formDelete.submit()
         })
-    })
+
+        //handle check all
+        btnCheckAll.change(function () {
+            const isCheckedAll = $(this).prop('checked')
+            movieItems.prop('checked', isCheckedAll)
+            //if (isCheckedAll) {
+               // movieItems.prop('checked', true) 
+          //}
+          renderBtnSelected()
+        })
+
+        // handle compare to movies and checkAll
+        movieItems.change(function () {
+          var isCheckedAll = movieItems.length === $('input[name="checkMovies[]"]:checked').length
+          btnCheckAll.prop('checked', isCheckedAll)
+          renderBtnSelected()
+        })
+
+      //handle submit form container
+      //formContainer.on('submit', function (e) {
+      //    const isSubmitted = !btnSelected.hasClass('disabled')
+      //    if(!isSubmitted) {
+      //      e.preventDefault()
+      //    }else {
+      //      formContainer.submit()
+      //    }
+      //} )
+
+      //handle renderBtnSelected
+      function renderBtnSelected () {
+        const isChecked = $('input[name="checkMovies[]"]:checked').length
+        if (isChecked) {
+          btnSelected.attr('disabled',false)
+        }else {
+          btnSelected.attr('disabled',true)
+        }
+    }
+})
 </script>
