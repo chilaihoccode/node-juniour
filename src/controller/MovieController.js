@@ -77,6 +77,11 @@ class MovieController {
                 Movies.delete( {_id : {$in : req.body.checkMovies}})
                     .then(res.redirect('back'))
                     .catch(next)
+            case 'restore':
+                Movies.restore( {_id : {$in : req.body.checkMovies}})
+                   .then(res.redirect('back'))
+                   .catch(next)
+            case 'forceDelete':
             break;
             default : {'Invail handle'}
         }

@@ -1,4 +1,17 @@
-<div class="container mt4">
+<form action="/movies/handle-form" method="POST" name="container-form" class="container mt4">
+    <div class="d-flex align-items-center mt-4">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="checkAll">
+        <label class="form-check-label" for="checkAll">
+          Chon Tat Ca
+        </label>
+      </div>
+      <select class="custom-select custom-select-sm div-select-option" name="selectAction" required>
+        <option value="">-- Select Action --</option>
+        <option value="restore">Restore</option>
+      </select>
+      <button class="btn btn-primary btn-sm btnSelected" disabled>Submit</button>
+    </div>
     <div class="container mt-4 mb-4">
       <a href="/me/stored/movies" class="btn btn-primary">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-2" width="20px" height="20px">
@@ -10,6 +23,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th scope="col">#</th>
                 <th scope="col">STT</th>
                 <th scope="col">name</th>
                 <th scope="col">title</th>
@@ -19,8 +33,11 @@
         </thead>
         <tbody>
             {{#each movies}}
-            <tr>
-                <th scope="row">{{@index}}</th>
+            <tr>  
+                <td>
+                  <input type="checkbox" name="checkMovies[]" value="{{this._id}}">
+                </td>
+                <th scope="row">{{sum @index 1}}</th>
                 <td>{{this.name}}</td>
                 <td>{{this.title}}</td>
                 <td>{{this.createdAt}}</td>
@@ -39,8 +56,7 @@
         </tbody>
     </table>
 
-
-</div>
+</form>
 
 <form name="deleteForm" method="POST"></form>
 <form name="restoreForm" method="POST"></form>
@@ -72,9 +88,13 @@
     document.addEventListener('DOMContentLoaded',function () {
         const btnDelete = document.getElementById('btnDelete')
         //const btnRestore = document.querySelectorAll('.btnRestore')
+        const btnCheckAll = $('#checkAll')
         const btnRestore = $('.btnRestore')
+        const btnSelected = $('.btnSelected')
+        const movieItems = $('input[name="checkMovies[]"]')
         var formDelete = document.forms['deleteForm']
         var formRestore = document.forms['restoreForm']
+        const formContainer = $('form[name="container-form"]')
         var movieID
 
         //when confirm clicked
@@ -95,5 +115,27 @@
           formRestore.action = `/movies/${movieID}/restore?_method=PATCH`
           formRestore.submit()
         })
+
+        //handle CheckAll Click
+        btnCheckAll.click(function () {
+          const isChecked = $(this).prop('checked')
+          movieItems.prop('checked', isChecked)
+          renderBtnSelected()
+        })
+        //handle compare movieItems and CheckAll
+        movieItems.click(function () {
+          const isChecked = movieItems.length === $('input[name="checkMovies[]"]:checked').length
+          btnCheckAll.prop('checked', isChecked)
+          renderBtnSelected()
+        })
+        //handle re-render btnSelected disabled
+        function renderBtnSelected(e) {
+          const isChecked = $('input[name="checkMovies[]"]:checked').length
+          if(!isChecked) {
+            btnSelected.attr('disabled',true)
+          }else {
+            btnSelected.attr('disabled',false)
+          }
+        }
     })
 </script>
